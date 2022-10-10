@@ -13,6 +13,7 @@ const ProductForm: React.FC = () => {
     title: "",
     price: 0,
   });
+  const [disableSubmitButton, setDisableSubmitButton] = useState<Boolean>(true);
 
   const handleChange = ({
     target: { name, value },
@@ -25,10 +26,11 @@ const ProductForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setDisableSubmitButton(false);
     await dispatch(addProductAsync(product));
+    setDisableSubmitButton(true);
 
     //it will cause bug if we don't clear the value
-
     let productForm: HTMLElement | null =
       document.getElementById("product-form");
 
@@ -75,6 +77,7 @@ const ProductForm: React.FC = () => {
         <button
           style={{ backgroundColor: errorMessage ? "red" : "" }}
           type="submit"
+          disabled={!disableSubmitButton}
         >
           Submit
         </button>
